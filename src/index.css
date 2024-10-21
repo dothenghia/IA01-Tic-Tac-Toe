@@ -14,4 +14,5 @@
   box-sizing: border-box;
   font-family: 'Quicksand', 'Trebuchet MS', 'Arial', sans-serif;
   font-weight: 500;
+  user-select: none;
 }
