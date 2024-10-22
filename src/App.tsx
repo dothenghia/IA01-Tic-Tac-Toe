@@ -1,4 +1,4 @@
-import Game from "./components/Game/Game"
+import Game from "./components/Game"
 
 const App = () => {
   return (
