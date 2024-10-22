@@ -11,7 +11,7 @@ function Square({ value, onSquareClick, isWinning, className }: SquareProps) {
   return (
     <button
       className={`flex-1 bg-backgroundColor border-4 border-boardColor hover:bg-hoverColor
-                  text-2xl ${value === 'X'? 'text-playerXColor' : 'text-playerOColor'}
+                 text-5xl md:text-6xl lg:text-7xl xl:text-8xl ${value === 'X' ? 'text-playerXColor' : 'text-playerOColor'}
                    ${isWinning ? '!bg-winColor' : ''}
                    ${className || ''}
                    `}
@@ -80,12 +80,15 @@ function Board({ xIsNext, squares, onPlay }: BoardProps) {
   }
 
   return (
-    <>
-      <div className="status">{status}</div>
-      <div className='w-80 h-80 bg-boardColor border-4 border-boardColor rounded-3xl overflow-hidden flex flex-col justify-center items-center'>
-        {boardRows}
+    <div className='px-6 w-full mt-6 flex flex-col items-center lg:items-end'>
+      <div className='w-full max-w-96 sm:max-w-none sm:w-96 md:w-96 lg:w-[420px] xl:w-[420px]'>
+        <div className="text-center w-full text-2xl md:text-3xl font-semibold text-headerColor">{status}</div>
+        <div className='mt-4 md:mt-6 w-full aspect-square
+        bg-boardColor border-4 border-boardColor rounded-3xl overflow-hidden flex flex-col justify-center items-center'>
+          {boardRows}
+        </div>
       </div>
-    </>
+    </div>
   );
 }
 
@@ -125,13 +128,24 @@ export default function Game() {
       description = 'Go to game start';
     }
     return (
-      <li key={move}>
+      <>
         {move === currentMove ? (
-          <span>You are at move #{move}</span>
+          <p
+            key={move}
+            className='p-3 mb-3 rounded-2xl w-full border-boardColor border-4 bg-boardColor text-center'
+          >
+            You are at move #{move} {step.location ? `(${step.location.row}, ${step.location.col})` : ''}
+          </p>
         ) : (
-          <button onClick={() => jumpTo(move)}>{description}</button>
+          <button
+            key={move}
+            className='p-3 mb-3 rounded-2xl w-full border-boardColor border-4 bg-backgroundColor hover:bg-hoverColor'
+            onClick={() => jumpTo(move)}
+          >
+            {description}
+          </button>
         )}
-      </li>
+      </>
     );
   });
 
@@ -140,15 +154,21 @@ export default function Game() {
   }
 
   return (
-    <div className="game">
-      <div className="game-board">
-        <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
-      </div>
-      <div className="game-info">
-        <button onClick={() => setIsAscending(!isAscending)}>
-          {isAscending ? 'Sort Descending' : 'Sort Ascending'}
-        </button>
-        <ol>{moves}</ol>
+    <div className="w-full flex-1 flex flex-col md:flex-row justify-start items-center md:items-start md:gap-8">
+      <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
+
+      <div className="w-full px-6 mt-8">
+        <div className='mx-auto lg:mx-0 w-full max-w-96 md:max-w-none md:w-full lg:w-96 flex flex-col justify-start items-end'>
+          <button
+            className='px-5 py-3 hover:bg-slate-200/60 rounded-2xl mb-2 flex items-center justify-between gap-2'
+            onClick={() => setIsAscending(!isAscending)}>
+            {isAscending ? 'Sort Descending' : 'Sort Ascending'}
+            <svg className="w-5 h-5 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 20V7m0 13-4-4m4 4 4-4m4-12v13m0-13 4 4m-4-4-4 4" />
+            </svg>
+          </button>
+          <div className='w-full'>{moves}</div>
+        </div>
       </div>
     </div>
   );
